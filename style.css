@@ -1,0 +1,8 @@
+.img {
+  width: 150px;
+  aspect-ratio: 3/1;
+  background-image: url(./images/chiikawa_3.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

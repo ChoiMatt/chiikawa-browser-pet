@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Chiikawa Browser Pet",
+  "version": "1.0",
+  "description": "A Chrome extension that creates a Chiikawa.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "images/chiikawa_icon.png",
+      "48": "images/chiikawa_icon.png",
+      "128": "images/chiikawa_icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "icons": {
+    "16": "images/chiikawa_icon.png",
+    "48": "images/chiikawa_icon.png",
+    "128": "images/chiikawa_icon.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/chiikawa_bag.png",
+        "images/chiikawa_weapon.png",
+        "images/chiikawa_rest.png",
+        "images/chiikawa_ground.png",
+        "images/chiikawa_smile.png",
+        "images/chiikawa_walk_right.png",
+        "images/chiikawa_walk_left.png",
+        "images/chiikawa_afraid.png",
+        "images/chiikawa_dance-1.png",
+        "audio/cry_sound.mp3"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
