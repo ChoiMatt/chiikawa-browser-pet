@@ -1,14 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Set CSS variables for background images
-  document.documentElement.style.setProperty(
-    "--bag-image",
-    `url('${chrome.runtime.getURL("images/chiikawa_bag.png")}')`
-  );
-  document.documentElement.style.setProperty(
-    "--weapon-image",
-    `url('${chrome.runtime.getURL("images/chiikawa_weapon.png")}')`
-  );
-
   const leftItem = document.createElement("div");
   leftItem.classList.add("background-item", "left-item");
   document.body.appendChild(leftItem);
@@ -23,35 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   pet.style.zIndex = "1000";
   pet.style.transition = "transform 0.5s";
   pet.classList.add("rest");
-  // Set the background images for different states
-  pet.style.setProperty(
-    "--rest-image",
-    `url('${chrome.runtime.getURL("images/chiikawa_rest.png")}')`
-  );
-  pet.style.setProperty(
-    "--smile-image",
-    `url('${chrome.runtime.getURL("images/chiikawa_smile.png")}')`
-  );
-  pet.style.setProperty(
-    "--walk-image-left",
-    `url('${chrome.runtime.getURL("images/chiikawa_walk_left.png")}')`
-  );
-  pet.style.setProperty(
-    "--walk-image-right",
-    `url('${chrome.runtime.getURL("images/chiikawa_walk_right.png")}')`
-  );
-  pet.style.setProperty(
-    "--dance-1-image",
-    `url('${chrome.runtime.getURL("images/chiikawa_dance-1.png")}')`
-  );
-  pet.style.setProperty(
-    "--cry-image",
-    `url('${chrome.runtime.getURL("images/chiikawa_afraid.png")}')`
-  );
-  pet.style.setProperty(
-    "--ground-image",
-    `url('${chrome.runtime.getURL("images/chiikawa_ground.png")}')`
-  );
   document.body.appendChild(pet);
 
   const petWidth = 40; // Width of the pet in pixels

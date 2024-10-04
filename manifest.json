@@ -31,18 +31,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": [
-        "images/chiikawa_bag.png",
-        "images/chiikawa_weapon.png",
-        "images/chiikawa_rest.png",
-        "images/chiikawa_ground.png",
-        "images/chiikawa_smile.png",
-        "images/chiikawa_walk_right.png",
-        "images/chiikawa_walk_left.png",
-        "images/chiikawa_afraid.png",
-        "images/chiikawa_dance-1.png",
-        "audio/cry_sound.mp3"
-      ],
+      "resources": ["images/*", "audio/*"],
       "matches": ["<all_urls>"]
     }
   ]
