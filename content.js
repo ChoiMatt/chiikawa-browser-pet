@@ -1,4 +1,3 @@
-console.log("Content script loaded");
 document.addEventListener("DOMContentLoaded", () => {
   // Set CSS variables for background images
   document.documentElement.style.setProperty(
@@ -19,7 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(rightItem);
 
   const pet = document.createElement("div");
-  pet.classList.add("ssh-pet", "rest");
+  pet.style.position = "fixed";
+  pet.style.bottom = "0";
+  pet.style.zIndex = "1000";
+  pet.style.transition = "transform 0.5s";
+  pet.classList.add("rest");
   // Set the background images for different states
   pet.style.setProperty(
     "--rest-image",
@@ -73,6 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const minWalkDuration = 3000; // Minimum walk duration of 3 seconds
   const maxWalkDuration = 5000; // Maximum walk duration of 5 seconds
 
+  function removeAllClasses(element) {
+    element.className = ""; // Set className to an empty string
+  }
   function updatePet() {
     if (!isDragging && walking) {
       const speed = Math.random() * 0.5; // Random speed between 0 and 0.5 pixels per frame
@@ -104,8 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function startWalking() {
+    if (isDragging) return;
     walking = true;
-    pet.classList.remove(chosen_actions);
+    removeAllClasses(pet);
     pet.classList.add("walk");
 
     // Rethink direction randomly before starting to walk
@@ -118,9 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function stopWalking() {
+    if (isDragging) return;
     walking = false;
     chosen_actions = actionKeys[Math.floor(Math.random() * actionKeys.length)];
-    pet.classList.remove("walk", "left", "right");
+    removeAllClasses(pet);
     pet.classList.add(chosen_actions);
     action_duration = actions[chosen_actions];
     setTimeout(startWalking, action_duration); // Start walking after resting
@@ -151,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pet.addEventListener("mousedown", (e) => {
     if (!walking) return;
     isDragging = true;
-    pet.classList.remove("walk", "left", "right");
+    removeAllClasses(pet);
     pet.classList.add("cry");
     const rect = pet.getBoundingClientRect();
     dragOffsetX = e.clientX - rect.left;
@@ -199,31 +207,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // After falling, change to ground class
       setTimeout(() => {
-        pet.classList.remove("cry");
+        removeAllClasses(pet);
         pet.classList.add("ground");
 
         setTimeout(() => {
-          pet.classList.remove("ground");
+          removeAllClasses(pet);
           pet.classList.add("rest");
           pet.style.transition = "";
-          const restDuration =
-            Math.random() * (maxRestDuration - minRestDuration) +
-            minRestDuration;
+          // const restDuration =
+          //   Math.random() * (maxRestDuration - minRestDuration) +
+          //   minRestDuration;
+          const restDuration = 2000;
           setTimeout(startWalking, restDuration);
         }, 2000);
-        // pet.addEventListener(
-        //   "animationend",
-        //   () => {
-        //     pet.classList.remove("ground");
-        //     pet.classList.add("rest");
-        //     pet.style.transition = "";
-        //     const restDuration =
-        //       Math.random() * (maxRestDuration - minRestDuration) +
-        //       minRestDuration;
-        //     setTimeout(startWalking, restDuration);
-        //   },
-        //   { once: true }
-        // );
       }, duration * 1000); // Wait for the duration of the fall before changing to ground
     }
   });

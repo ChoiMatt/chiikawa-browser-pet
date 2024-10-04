@@ -1,15 +1,3 @@
-.ssh-pet {
-  width: 50 px;
-  height: 54px;
-  position: fixed;
-  bottom: 0;
-  z-index: 1000;
-  background-size: 40px 60px;
-  background-position: 0 0;
-  transition: transform 0.5s;
-  background-image: var(--rest-image);
-}
-
 @keyframes ssh-pet-walk {
   0% {
     background-position-y: 0;
@@ -19,7 +7,7 @@
   }
 }
 
-.ssh-pet.walk {
+.walk {
   width: 50px;
   height: 54px;
   background-repeat: no-repeat;
@@ -28,11 +16,11 @@
   animation: ssh-pet-walk 1.5s steps(9) infinite;
 }
 
-.ssh-pet.walk.left {
+.walk.left {
   background-image: var(--walk-image-left);
 }
 
-.ssh-pet.walk.right {
+.walk.right {
   background-image: var(--walk-image-right);
 }
 
@@ -45,7 +33,7 @@
   }
 }
 
-.ssh-pet.rest {
+.rest {
   width: 50px;
   height: 54px;
   background-repeat: no-repeat;
@@ -64,7 +52,7 @@
   }
 }
 
-.ssh-pet.dance {
+.dance {
   width: 51px;
   height: 55px;
   background-size: 51px 825px;
@@ -73,7 +61,9 @@
   animation: ssh-pet-dance 3.5s steps(15) infinite;
 }
 
-.ssh-pet.sing {
+.sing {
+  width: 50px;
+  height: 54px;
   background-size: 40px 60px;
   background-position: 0 0;
   animation: none;
@@ -89,7 +79,7 @@
   }
 }
 
-.ssh-pet.cry {
+.cry {
   width: 50px;
   height: 60px;
   background-size: 50px 180px; /* Width and total height of the scaled sprite sheet */
@@ -100,7 +90,9 @@
   animation: ssh-pet-cry 0.5s steps(3) infinite; /* 3 steps for 3 frames */
 }
 
-.ssh-pet.fall {
+.fall {
+  width: 50px;
+  height: 54px;
   background-image: var(--rest-image);
   /* Change color to indicate falling */
 }
@@ -114,7 +106,7 @@
   }
 }
 
-.ssh-pet.ground {
+.ground {
   width: 49px;
   height: 51px;
   background-size: 49px 459px;
