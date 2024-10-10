@@ -6,3 +6,65 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+
+/* General button styles */
+button {
+  background-color: #4caf50; /* Green background */
+  color: white; /* White text */
+  border: none; /* Remove default border */
+  padding: 10px 20px; /* Add some padding */
+  text-align: center; /* Center the text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the button inline-block */
+  font-size: 16px; /* Increase font size */
+  margin: 4px 2px; /* Add some margin */
+  cursor: pointer; /* Change cursor to pointer */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
+}
+
+/* Hover effect */
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+  transform: scale(1.05); /* Slightly enlarge the button */
+}
+
+.switch {
+  position: relative;
+  margin-top: 20px;
+}
+
+.switch label {
+  width: 48px;
+  height: 20px;
+  background-color: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50px;
+  border: 1px solid #6262626e;
+}
+
+.switch input[type="checkbox"] {
+  visibility: hidden;
+}
+
+.switch label:after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: 50px;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 100ms;
+  background-color: rgb(239, 193, 214);
+}
+
+.switch .look:checked + label:after {
+  left: 30px;
+}
+
+.switch .look:checked + label {
+  background-color: rgb(255, 159, 159);
+}

@@ -7,6 +7,19 @@ document.addEventListener("DOMContentLoaded", () => {
   rightItem.classList.add("background-item", "right-item");
   document.body.appendChild(rightItem);
 
+  const cameraItem = document.createElement("div");
+  cameraItem.classList.add("background-item", "camera-item");
+  document.body.appendChild(cameraItem);
+
+  const camera = document.createElement("div");
+  camera.classList.add("camera");
+
+  const rack = document.createElement("div");
+  rack.classList.add("rack");
+
+  cameraItem.appendChild(camera);
+  cameraItem.appendChild(rack);
+
   const pet = document.createElement("div");
   pet.style.position = "fixed";
   pet.style.bottom = "0";
@@ -107,9 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add resize event listener
   window.addEventListener("resize", () => {
-    // Ensure the pet stays within the window after resizing
     x = Math.min(x, window.innerWidth - petWidth);
-    updateBackgroundItemsPosition();
   });
 
   // Add drag functionality
