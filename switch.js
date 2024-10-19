@@ -8,7 +8,7 @@ function createSwitches(ids) {
           <input id="${id}" class="look" type="checkbox" />
           <label for="${id}"></label>
         </div>
-        <div>
+        <div style="align-self: center;">
             <p style="font-size: 14px; font-weight: 500;">${displayName}</p>
         </div>
         </div>

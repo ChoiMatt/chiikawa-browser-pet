@@ -29,7 +29,7 @@
     background-position-y: 0;
   }
   100% {
-    background-position-y: -486px;
+    background-position-y: -594px;
   }
 }
 
@@ -37,9 +37,9 @@
   width: 50px;
   height: 54px;
   background-repeat: no-repeat;
-  background-size: 50px 486px;
+  background-size: 50px 594px;
   background-position: 0 0;
-  animation: ssh-pet-smile 2s steps(9) infinite;
+  animation: ssh-pet-smile 2.5s steps(11) infinite;
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_smile.png");
 }
 
