@@ -20,13 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
   cameraItem.appendChild(camera);
   cameraItem.appendChild(rack);
 
-  const pet = document.createElement("div");
-  pet.style.position = "fixed";
-  pet.style.bottom = "0";
-  pet.style.zIndex = "1000";
-  pet.style.transition = "transform 0.5s";
-  pet.classList.add("rest");
-  document.body.appendChild(pet);
+  const chiikawa = document.createElement("div");
+  chiikawa.style.position = "fixed";
+  chiikawa.style.bottom = "0";
+  chiikawa.style.zIndex = "1000";
+  chiikawa.style.transition = "transform 0.5s";
+  chiikawa.classList.add("rest");
+  document.body.appendChild(chiikawa);
 
   const petWidth = 40; // Width of the pet in pixels
   const petHeight = 60; // Height of the pet in pixels
@@ -68,26 +68,26 @@ document.addEventListener("DOMContentLoaded", () => {
         updateDirectionClass();
       }
 
-      pet.style.left = `${x}px`;
+      chiikawa.style.left = `${x}px`;
     }
     requestAnimationFrame(updatePet);
   }
 
   function updateDirectionClass() {
     if (direction === 1) {
-      pet.classList.remove("left");
-      pet.classList.add("right");
+      chiikawa.classList.remove("left");
+      chiikawa.classList.add("right");
     } else {
-      pet.classList.remove("right");
-      pet.classList.add("left");
+      chiikawa.classList.remove("right");
+      chiikawa.classList.add("left");
     }
   }
 
   function startWalking() {
     if (isDragging) return;
     walking = true;
-    removeAllClasses(pet);
-    pet.classList.add("walk");
+    removeAllClasses(chiikawa);
+    chiikawa.classList.add("walk");
 
     // Rethink direction randomly before starting to walk
     direction = Math.random() < 0.5 ? -1 : 1; // Randomly set direction
@@ -102,15 +102,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isDragging) return;
     walking = false;
     chosen_actions = actionKeys[Math.floor(Math.random() * actionKeys.length)];
-    removeAllClasses(pet);
-    pet.classList.add(chosen_actions);
+    removeAllClasses(chiikawa);
+    chiikawa.classList.add(chosen_actions);
     action_duration = actions[chosen_actions];
     setTimeout(startWalking, action_duration); // Start walking after resting
   }
 
   // Set initial position at the bottom of the screen
-  pet.style.left = `${x}px`;
-  pet.style.bottom = "0px";
+  chiikawa.style.left = `${x}px`;
+  chiikawa.style.bottom = "0px";
 
   // Start the pet behavior loop
   requestAnimationFrame(updatePet);
@@ -128,15 +128,15 @@ document.addEventListener("DOMContentLoaded", () => {
   crySound.volume = 1; // Adjust volume as needed (0.0 to 1.0)
   crySound.loop = true; // Enable looping
 
-  pet.addEventListener("mousedown", (e) => {
+  chiikawa.addEventListener("mousedown", (e) => {
     if (!walking) return;
     isDragging = true;
-    removeAllClasses(pet);
-    pet.classList.add("cry");
-    const rect = pet.getBoundingClientRect();
+    removeAllClasses(chiikawa);
+    chiikawa.classList.add("cry");
+    const rect = chiikawa.getBoundingClientRect();
     dragOffsetX = e.clientX - rect.left;
     dragOffsetY = e.clientY - rect.top;
-    pet.style.transition = "none"; // Disable transition during drag
+    chiikawa.style.transition = "none"; // Disable transition during drag
 
     // Play cry sound
     crySound.currentTime = 0; // Reset sound to start
@@ -152,8 +152,11 @@ document.addEventListener("DOMContentLoaded", () => {
         Math.min(e.clientX - dragOffsetX, window.innerWidth - petWidth)
       );
       const y = e.clientY - dragOffsetY;
-      pet.style.left = `${x}px`;
-      pet.style.bottom = `${Math.max(0, window.innerHeight - y - petHeight)}px`;
+      chiikawa.style.left = `${x}px`;
+      chiikawa.style.bottom = `${Math.max(
+        0,
+        window.innerHeight - y - petHeight
+      )}px`;
     }
   });
 
@@ -168,24 +171,24 @@ document.addEventListener("DOMContentLoaded", () => {
       crySound.currentTime = 0;
 
       // Calculate the distance to fall
-      const petRect = pet.getBoundingClientRect();
+      const petRect = chiikawa.getBoundingClientRect();
       const fallDistance = window.innerHeight - petRect.bottom; // Distance to the bottom of the window
 
       // Set a duration based on the fall distance (e.g., 0.5 seconds for 100 pixels)
       const duration = Math.min(fallDistance / 200, 1.25); // Example: 1 second max duration
 
-      pet.style.transition = `bottom ${duration}s cubic-bezier(0.5, 0, 1, 1)`; // Enable falling transition
-      pet.style.bottom = "0px"; // Make the pet fall to the bottom
+      chiikawa.style.transition = `bottom ${duration}s cubic-bezier(0.5, 0, 1, 1)`; // Enable falling transition
+      chiikawa.style.bottom = "0px"; // Make the pet fall to the bottom
 
       // After falling, change to ground class
       setTimeout(() => {
-        removeAllClasses(pet);
-        pet.classList.add("ground");
+        removeAllClasses(chiikawa);
+        chiikawa.classList.add("ground");
 
         setTimeout(() => {
-          removeAllClasses(pet);
-          pet.classList.add("rest");
-          pet.style.transition = "";
+          removeAllClasses(chiikawa);
+          chiikawa.classList.add("rest");
+          chiikawa.style.transition = "";
           // const restDuration =
           //   Math.random() * (maxRestDuration - minRestDuration) +
           //   minRestDuration;
