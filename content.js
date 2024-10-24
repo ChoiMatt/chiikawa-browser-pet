@@ -198,4 +198,41 @@ document.addEventListener("DOMContentLoaded", () => {
       }, duration * 1000); // Wait for the duration of the fall before changing to ground
     }
   });
+
+  function CameraAnimation() {
+    const cameraSound = new Audio(
+      chrome.runtime.getURL("audio/camera_click.mp3")
+    );
+    cameraSound.volume = 1;
+    cameraSound.play().catch((error) => {
+      console.error("Error playing sound:", error);
+    });
+    const blink = document.createElement("div");
+    blink.classList.add("blink");
+    camera.appendChild(blink);
+  }
+
+  function ChiikawaDisappear() {
+    return;
+  }
+
+  let camera_clicked = false;
+  cameraItem.addEventListener("click", () => {
+    if (camera_clicked) return;
+    camera_clicked = true;
+    camera.style.cursor = "default";
+    CameraAnimation();
+    if (!walking) {
+      const checkWalkingInterval = setInterval(() => {
+        if (walking) {
+          ChiikawaDisappear();
+          console.log("Pet is now walking!");
+          clearInterval(checkWalkingInterval);
+        }
+      }, 100);
+    } else {
+      ChiikawaDisappear();
+      console.log("Pet is already walking!");
+    }
+  });
 });
