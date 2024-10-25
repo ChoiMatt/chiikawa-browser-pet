@@ -123,7 +123,7 @@
   background-position: bottom;
 }
 
-.left-item {
+.chiikawa_bag {
   width: 50px;
   height: 33.75px;
   left: 0px;
@@ -131,7 +131,7 @@
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_bag.png");
 }
 
-.right-item {
+.chiikawa_weapon {
   width: 32.5px;
   height: 62.5px;
   right: 0px;
@@ -139,7 +139,7 @@
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_weapon.png");
 }
 
-.camera-item {
+.chiikawa_camera {
   display: flex;
   flex-direction: column;
   align-items: center;

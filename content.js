@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const leftItem = document.createElement("div");
-  leftItem.classList.add("background-item", "left-item");
-  document.body.appendChild(leftItem);
+  const chiikawa_bag = document.createElement("div");
+  chiikawa_bag.classList.add("background-item", "chiikawa_bag");
+  document.body.appendChild(chiikawa_bag);
 
-  const rightItem = document.createElement("div");
-  rightItem.classList.add("background-item", "right-item");
-  document.body.appendChild(rightItem);
+  const chiikawa_weapon = document.createElement("div");
+  chiikawa_weapon.classList.add("background-item", "chiikawa_weapon");
+  document.body.appendChild(chiikawa_weapon);
 
-  const cameraItem = document.createElement("div");
-  cameraItem.classList.add("background-item", "camera-item");
-  document.body.appendChild(cameraItem);
+  const chiikawa_camera = document.createElement("div");
+  chiikawa_camera.classList.add("background-item", "chiikawa_camera");
+  document.body.appendChild(chiikawa_camera);
 
   const camera = document.createElement("div");
   camera.classList.add("camera");
@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const rack = document.createElement("div");
   rack.classList.add("rack");
 
-  cameraItem.appendChild(camera);
-  cameraItem.appendChild(rack);
+  chiikawa_camera.appendChild(camera);
+  chiikawa_camera.appendChild(rack);
 
   const chiikawa = document.createElement("div");
   chiikawa.style.position = "fixed";
@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let camera_clicked = false;
-  cameraItem.addEventListener("click", () => {
+  chiikawa_camera.addEventListener("click", () => {
     if (camera_clicked) return;
     camera_clicked = true;
     camera.style.cursor = "default";
@@ -233,6 +233,17 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       ChiikawaDisappear();
       console.log("Pet is already walking!");
+    }
+  });
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "toggleElement") {
+      const element = document.querySelector(`.${request.id}`);
+      if (request.checked) {
+        element.style.display = "none";
+      } else {
+        element.style.display = "block";
+      }
     }
   });
 });

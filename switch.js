@@ -5,7 +5,7 @@ function createSwitches(ids) {
     const switchHTML = `
     <div style="display: flex; justify-content: space-between;">
         <div class="switch">
-          <input id="${id}" class="look" type="checkbox" />
+          <input id="${id}" class="toggle-btn" type="checkbox" />
           <label for="${id}"></label>
         </div>
         <div style="align-self: center;">
@@ -15,9 +15,36 @@ function createSwitches(ids) {
       `;
     container.insertAdjacentHTML("beforeend", switchHTML);
 
-    // Add onclick listener to the input
-    const checkbox = document.getElementById(id); // Get the checkbox by its ID
-    checkbox.addEventListener("click", () => {});
+    const checkbox = document.getElementById(id);
+
+    chrome.storage.local.get([id], (result) => {
+      if (result[id] !== undefined) {
+        checkbox.checked = result[id];
+        if (checkbox.checked) {
+          checkbox.classList.add("active");
+        }
+      }
+    });
+
+    checkbox.addEventListener("click", () => {
+      if (checkbox.checked) {
+        checkbox.classList.add("active");
+      } else {
+        checkbox.classList.remove("active");
+      }
+
+      chrome.storage.local.set({ [id]: checkbox.checked }, () => {
+        console.log("successfully stored.");
+      });
+
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, {
+          action: "toggleElement",
+          id: checkbox.id,
+          checked: checkbox.checked,
+        });
+      });
+    });
   });
 }
 

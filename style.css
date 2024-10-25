@@ -1,5 +1,5 @@
 .img {
-  width: 150px;
+  width: 200px;
   aspect-ratio: 3/1;
   background-image: url(./images/chiikawa_3.png);
   background-size: cover;
@@ -61,10 +61,10 @@ button:hover {
   background-color: rgb(239, 193, 214);
 }
 
-.switch .look:checked + label:after {
+.switch .toggle-btn.active + label:after {
   left: 30px;
 }
 
-.switch .look:checked + label {
+.switch .toggle-btn.active + label {
   background-color: rgb(255, 159, 159);
 }
