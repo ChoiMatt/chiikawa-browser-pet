@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isDragging = false;
   let dragOffsetX = 0;
   let dragOffsetY = 0;
+  let set_volume = 0.5;
 
   const minRestDuration = 4000; // Minimum rest duration of 7 seconds
   const maxRestDuration = 7000; // Maximum rest duration of 10 seconds
@@ -125,8 +126,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add drag functionality
   const crySound = new Audio(chrome.runtime.getURL("audio/cry_sound.mp3"));
-  crySound.volume = 1; // Adjust volume as needed (0.0 to 1.0)
-  crySound.loop = true; // Enable looping
+  crySound.volume = set_volume;
+  crySound.loop = true;
 
   chiikawa.addEventListener("mousedown", (e) => {
     if (!walking) return;
@@ -203,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cameraSound = new Audio(
       chrome.runtime.getURL("audio/camera_click.mp3")
     );
-    cameraSound.volume = 1;
+    cameraSound.volume = set_volume;
     cameraSound.play().catch((error) => {
       console.error("Error playing sound:", error);
     });
@@ -244,6 +245,14 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         element.style.display = "block";
       }
+    }
+  });
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "setVolume") {
+      set_volume = request.volume / 100;
+      crySound.volume = set_volume;
+      cameraSound.volume = set_volume;
     }
   });
 });

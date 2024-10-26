@@ -9,18 +9,18 @@
 
 /* General button styles */
 button {
-  background-color: #4caf50; /* Green background */
-  color: white; /* White text */
-  border: none; /* Remove default border */
-  padding: 10px 20px; /* Add some padding */
-  text-align: center; /* Center the text */
-  text-decoration: none; /* Remove underline */
-  display: inline-block; /* Make the button inline-block */
-  font-size: 16px; /* Increase font size */
-  margin: 4px 2px; /* Add some margin */
-  cursor: pointer; /* Change cursor to pointer */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth transition for background color and transform */
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 /* Hover effect */
@@ -67,4 +67,45 @@ button:hover {
 
 .switch .toggle-btn.active + label {
   background-color: rgb(255, 159, 159);
+}
+
+.volume-slider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 200px;
+  margin: 14px 0;
+}
+
+.volume-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.volume-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 65%;
+  height: 5px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+}
+
+.volume-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ffafee;
+  cursor: pointer;
+}
+
+.volume-input::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ffafee;
+  cursor: pointer;
 }
