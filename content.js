@@ -1,258 +1,258 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const chiikawa_bag = document.createElement("div");
-  chiikawa_bag.classList.add("background-item", "chiikawa_bag");
-  document.body.appendChild(chiikawa_bag);
-
-  const chiikawa_weapon = document.createElement("div");
-  chiikawa_weapon.classList.add("background-item", "chiikawa_weapon");
-  document.body.appendChild(chiikawa_weapon);
-
-  const chiikawa_camera = document.createElement("div");
-  chiikawa_camera.classList.add("background-item", "chiikawa_camera");
-  document.body.appendChild(chiikawa_camera);
-
-  const camera = document.createElement("div");
-  camera.classList.add("camera");
-
-  const rack = document.createElement("div");
-  rack.classList.add("rack");
-
-  chiikawa_camera.appendChild(camera);
-  chiikawa_camera.appendChild(rack);
-
-  const chiikawa = document.createElement("div");
-  chiikawa.style.position = "fixed";
-  chiikawa.style.bottom = "0";
-  chiikawa.style.zIndex = "1000";
-  chiikawa.style.transition = "transform 0.5s";
-  chiikawa.classList.add("rest");
-  document.body.appendChild(chiikawa);
-
-  const petWidth = 40; // Width of the pet in pixels
-  const petHeight = 60; // Height of the pet in pixels
-  const actions = {
-    rest: 2000, // Duration in seconds
-    dance: 3500, // Duration in seconds
-    sing: 1000, // Duration in seconds
-  };
-  const actionKeys = Object.keys(actions);
-  let chosen_actions = actionKeys[0];
-  let action_duration = actions[chosen_actions];
-  let x = Math.random() * (window.innerWidth - petWidth);
-  let direction = Math.random() < 0.5 ? -1 : 1; // Random initial direction
-  let walking = false;
-  let isDragging = false;
-  let dragOffsetX = 0;
-  let dragOffsetY = 0;
-  let set_volume = 0.5;
-
-  const minRestDuration = 4000; // Minimum rest duration of 7 seconds
-  const maxRestDuration = 7000; // Maximum rest duration of 10 seconds
-  const minWalkDuration = 3000; // Minimum walk duration of 3 seconds
-  const maxWalkDuration = 5000; // Maximum walk duration of 5 seconds
-
-  function removeAllClasses(element) {
-    element.className = ""; // Set className to an empty string
+class BaseItem {
+  constructor(classList, addToBody = true) {
+    this.div = document.createElement("div");
+    this.div.classList.add(...classList);
+    if (addToBody) document.body.appendChild(this.div);
   }
-  function updatePet() {
-    if (!isDragging && walking) {
+
+  addItem(item) {
+    this.div.appendChild(item.div); // Append the provided item's div to this div
+  }
+
+  removeAllClasses() {
+    this.div.className = ""; // Set className to an empty string
+  }
+}
+
+class Camera extends BaseItem {
+  constructor(classList, chiikawaInstance, addToBody = true) {
+    super(classList, addToBody);
+    this.chiikawa = chiikawaInstance; // Store the chiikawa instance
+    this.cameraClicked = false;
+    this.init();
+  }
+
+  init() {
+    this.div.addEventListener("mousedown", this.handleMouseDown.bind(this));
+  }
+
+  CameraAnimation() {
+    // const cameraSound = new Audio(
+    //   chrome.runtime.getURL("audio/camera_click.mp3")
+    // );
+    // //cameraSound.volume = this.setVolume;
+    // cameraSound.play().catch((error) => {
+    //   console.error("Error playing sound:", error);
+    // });
+    const blink = document.createElement("div");
+    blink.classList.add("blink");
+    this.div.appendChild(blink);
+  }
+
+  handleMouseDown() {
+    if (this.cameraClicked) return;
+    this.cameraClicked = true;
+    this.div.style.cursor = "default";
+    this.CameraAnimation();
+    if (!this.chiikawa.walking) {
+      const checkWalkingInterval = setInterval(() => {
+        if (this.chiikawa.walking) {
+          this.chiikawa.ChiikawaDisappear();
+          clearInterval(checkWalkingInterval);
+        }
+      }, 100);
+    } else {
+      this.chiikawa.ChiikawaDisappear();
+    }
+  }
+}
+
+class Chiikawa extends BaseItem {
+  constructor() {
+    super(["rest"]); // Call the parent constructor with the initial class
+    this.div.style.position = "fixed";
+    this.div.style.bottom = "0";
+    this.div.style.zIndex = "1000";
+    this.div.style.transition = "transform 0.5s";
+    this.petWidth = 40; // Width of the pet in pixels
+    this.petHeight = 60; // Height of the pet in pixels
+    this.actions = {
+      rest: 2000, // Duration in milliseconds
+      dance: 3500, // Duration in milliseconds
+      sing: 1000,
+    };
+    this.actionKeys = Object.keys(this.actions);
+    this.chosenActions = this.actionKeys[0];
+    this.actionDuration = this.actions[this.chosenActions];
+    this.x = Math.random() * (window.innerWidth - this.petWidth);
+    this.direction = Math.random() < 0.5 ? -1 : 1;
+    this.walking = false;
+    this.maxWalkDuration = 10000;
+    this.minWalkDuration = 5000;
+    this.isDragging = false;
+    this.isFalling = false;
+    this.dragOffsetX = 0;
+    this.dragOffsetY = 0;
+    this.setVolume = 0.5;
+
+    this.init();
+  }
+
+  init() {
+    this.div.style.left = `${this.x}px`;
+    this.div.style.bottom = "0px";
+
+    // Start the pet behavior loop
+    requestAnimationFrame(this.updatePet.bind(this));
+    setTimeout(this.startWalking.bind(this), this.actionDuration); // Start the first walk after initial rest
+
+    // Add resize event listener
+    window.addEventListener("resize", this.handleResize.bind(this));
+
+    // Add drag functionality
+    this.div.addEventListener("mousedown", this.handleMouseDown.bind(this));
+    document.addEventListener("mousemove", this.handleMouseMove.bind(this));
+    document.addEventListener("mouseup", this.handleMouseUp.bind(this));
+  }
+
+  isWalking() {
+    return this.walking;
+  }
+
+  updatePet() {
+    if (!this.isDragging && !this.isFalling && this.walking) {
       const speed = Math.random() * 0.5; // Random speed between 0 and 0.5 pixels per frame
-      x += speed * direction;
+      this.x += speed * this.direction;
 
       // Change direction if the pet hits the edge of the screen
-      if (x < 0 || x > window.innerWidth - petWidth) {
-        direction *= -1; // Reverse direction
+      if (this.x < 0 || this.x > window.innerWidth - this.petWidth) {
+        this.direction *= -1; // Reverse direction
         // Ensure the pet stays within the window
-        x = Math.max(0, Math.min(x, window.innerWidth - petWidth));
-
-        // Update the animation direction
-        updateDirectionClass();
+        this.x = Math.max(
+          0,
+          Math.min(this.x, window.innerWidth - this.petWidth)
+        );
+        this.updateDirectionClass();
       }
 
-      chiikawa.style.left = `${x}px`;
+      this.div.style.left = `${this.x}px`;
     }
-    requestAnimationFrame(updatePet);
+    requestAnimationFrame(this.updatePet.bind(this));
   }
 
-  function updateDirectionClass() {
-    if (direction === 1) {
-      chiikawa.classList.remove("left");
-      chiikawa.classList.add("right");
+  updateDirectionClass() {
+    if (this.direction === 1) {
+      this.div.classList.remove("left");
+      this.div.classList.add("right");
     } else {
-      chiikawa.classList.remove("right");
-      chiikawa.classList.add("left");
+      this.div.classList.remove("right");
+      this.div.classList.add("left");
     }
   }
 
-  function startWalking() {
-    if (isDragging) return;
-    walking = true;
-    removeAllClasses(chiikawa);
-    chiikawa.classList.add("walk");
+  startWalking() {
+    if (this.isDragging || this.isFalling) return;
+    this.walking = true;
+    this.removeAllClasses();
+    this.div.classList.add("walk");
 
     // Rethink direction randomly before starting to walk
-    direction = Math.random() < 0.5 ? -1 : 1; // Randomly set direction
-    updateDirectionClass(); // Update the class based on the new direction
+    this.direction = Math.random() < 0.5 ? -1 : 1; // Randomly set direction
+    this.updateDirectionClass(); // Update the class based on the new direction
 
     const walkDuration =
-      Math.random() * (maxWalkDuration - minWalkDuration) + minWalkDuration;
-    setTimeout(stopWalking, walkDuration);
+      Math.random() * (this.maxWalkDuration - this.minWalkDuration) +
+      this.minWalkDuration;
+    setTimeout(this.stopWalking.bind(this), walkDuration);
   }
 
-  function stopWalking() {
-    if (isDragging) return;
-    walking = false;
-    chosen_actions = actionKeys[Math.floor(Math.random() * actionKeys.length)];
-    removeAllClasses(chiikawa);
-    chiikawa.classList.add(chosen_actions);
-    action_duration = actions[chosen_actions];
-    setTimeout(startWalking, action_duration); // Start walking after resting
+  stopWalking() {
+    if (this.isDragging || this.isFalling) return;
+    this.walking = false;
+    this.chosenActions =
+      this.actionKeys[Math.floor(Math.random() * this.actionKeys.length)];
+    this.removeAllClasses();
+    this.div.classList.add(this.chosenActions);
+    this.actionDuration = this.actions[this.chosenActions];
+    setTimeout(this.startWalking.bind(this), this.actionDuration); // Start walking after resting
   }
 
-  // Set initial position at the bottom of the screen
-  chiikawa.style.left = `${x}px`;
-  chiikawa.style.bottom = "0px";
+  handleResize() {
+    this.x = Math.min(this.x, window.innerWidth - this.petWidth);
+  }
 
-  // Start the pet behavior loop
-  requestAnimationFrame(updatePet);
-  // const initialRestDuration =
-  //   Math.random() * (maxRestDuration - minRestDuration) + minRestDuration;
-  setTimeout(startWalking, action_duration); // Start the first walk after initial rest
+  handleMouseDown(e) {
+    if (!this.walking) return;
+    this.isDragging = true;
+    this.walking = false;
+    this.removeAllClasses();
+    this.div.classList.add("cry");
+    const rect = this.div.getBoundingClientRect();
+    this.dragOffsetX = e.clientX - rect.left;
+    this.dragOffsetY = e.clientY - rect.top;
+    this.div.style.transition = "none"; // Disable transition during drag
+  }
 
-  // Add resize event listener
-  window.addEventListener("resize", () => {
-    x = Math.min(x, window.innerWidth - petWidth);
-  });
-
-  // Add drag functionality
-  const crySound = new Audio(chrome.runtime.getURL("audio/cry_sound.mp3"));
-  crySound.volume = set_volume;
-  crySound.loop = true;
-
-  chiikawa.addEventListener("mousedown", (e) => {
-    if (!walking) return;
-    isDragging = true;
-    removeAllClasses(chiikawa);
-    chiikawa.classList.add("cry");
-    const rect = chiikawa.getBoundingClientRect();
-    dragOffsetX = e.clientX - rect.left;
-    dragOffsetY = e.clientY - rect.top;
-    chiikawa.style.transition = "none"; // Disable transition during drag
-
-    // Play cry sound
-    crySound.currentTime = 0; // Reset sound to start
-    crySound
-      .play()
-      .catch((error) => console.error("Error playing sound:", error));
-  });
-
-  document.addEventListener("mousemove", (e) => {
-    if (isDragging) {
-      x = Math.max(
+  handleMouseMove(e) {
+    if (this.isDragging) {
+      this.x = Math.max(
         0,
-        Math.min(e.clientX - dragOffsetX, window.innerWidth - petWidth)
+        Math.min(
+          e.clientX - this.dragOffsetX,
+          window.innerWidth - this.petWidth
+        )
       );
-      const y = e.clientY - dragOffsetY;
-      chiikawa.style.left = `${x}px`;
-      chiikawa.style.bottom = `${Math.max(
+      const y = e.clientY - this.dragOffsetY;
+      this.div.style.left = `${this.x}px`;
+      this.div.style.bottom = `${Math.max(
         0,
-        window.innerHeight - y - petHeight
+        window.innerHeight - y - this.petHeight
       )}px`;
     }
-  });
+  }
 
-  document.addEventListener("mouseup", () => {
-    if (isDragging) {
-      isDragging = false;
-      // pet.classList.remove("cry");
-      // pet.classList.add("fall");
-
-      // Stop cry sound
-      crySound.pause();
-      crySound.currentTime = 0;
+  handleMouseUp() {
+    if (this.isDragging) {
+      this.isDragging = false;
+      this.isFalling = true;
 
       // Calculate the distance to fall
-      const petRect = chiikawa.getBoundingClientRect();
+      const petRect = this.div.getBoundingClientRect();
       const fallDistance = window.innerHeight - petRect.bottom; // Distance to the bottom of the window
 
       // Set a duration based on the fall distance (e.g., 0.5 seconds for 100 pixels)
       const duration = Math.min(fallDistance / 200, 1.25); // Example: 1 second max duration
 
-      chiikawa.style.transition = `bottom ${duration}s cubic-bezier(0.5, 0, 1, 1)`; // Enable falling transition
-      chiikawa.style.bottom = "0px"; // Make the pet fall to the bottom
+      this.div.style.transition = `bottom ${duration}s cubic-bezier(0.5, 0, 1, 1)`; // Enable falling transition
+      this.div.style.bottom = "0px"; // Make the pet fall to the bottom
 
-      // After falling, change to ground class
       setTimeout(() => {
-        removeAllClasses(chiikawa);
-        chiikawa.classList.add("ground");
-
-        setTimeout(() => {
-          removeAllClasses(chiikawa);
-          chiikawa.classList.add("rest");
-          chiikawa.style.transition = "";
-          // const restDuration =
-          //   Math.random() * (maxRestDuration - minRestDuration) +
-          //   minRestDuration;
-          const restDuration = 2000;
-          setTimeout(startWalking, restDuration);
-        }, 2000);
-      }, duration * 1000); // Wait for the duration of the fall before changing to ground
+        this.isFalling = false;
+        this.removeAllClasses();
+        this.div.classList.add("ground");
+        this.div.addEventListener(
+          "animationend",
+          this.handleGroundAnimationEnd.bind(this),
+          {
+            once: true,
+          }
+        );
+      }, duration * 1000);
     }
-  });
-
-  function CameraAnimation() {
-    const cameraSound = new Audio(
-      chrome.runtime.getURL("audio/camera_click.mp3")
-    );
-    cameraSound.volume = set_volume;
-    cameraSound.play().catch((error) => {
-      console.error("Error playing sound:", error);
-    });
-    const blink = document.createElement("div");
-    blink.classList.add("blink");
-    camera.appendChild(blink);
   }
 
-  function ChiikawaDisappear() {
-    return;
+  handleGroundAnimationEnd() {
+    this.removeAllClasses();
+    this.div.classList.add("rest");
+    this.div.style.transition = "";
+
+    const restDuration = 2000;
+    setTimeout(this.startWalking.bind(this), restDuration);
   }
 
-  let camera_clicked = false;
-  chiikawa_camera.addEventListener("click", () => {
-    if (camera_clicked) return;
-    camera_clicked = true;
-    camera.style.cursor = "default";
-    CameraAnimation();
-    if (!walking) {
-      const checkWalkingInterval = setInterval(() => {
-        if (walking) {
-          ChiikawaDisappear();
-          console.log("Pet is now walking!");
-          clearInterval(checkWalkingInterval);
-        }
-      }, 100);
-    } else {
-      ChiikawaDisappear();
-      console.log("Pet is already walking!");
-    }
-  });
+  ChiikawaDisappear() {
+    this.removeAllClasses();
+    this.div.classList.add("fade");
+  }
+}
 
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "toggleElement") {
-      const element = document.querySelector(`.${request.id}`);
-      if (request.checked) {
-        element.style.display = "none";
-      } else {
-        element.style.display = "block";
-      }
-    }
-  });
-
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "setVolume") {
-      set_volume = request.volume / 100;
-      crySound.volume = set_volume;
-      cameraSound.volume = set_volume;
-    }
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const chiikawa_bag = new BaseItem(["background-item", "chiikawa_bag"]);
+  const chiikawa_weapon = new BaseItem(["background-item", "chiikawa_weapon"]);
+  const chiikawa_camera = new BaseItem(["background-item", "chiikawa_camera"]);
+  const chiikawa = new Chiikawa();
+  const camera = new Camera(["camera"], chiikawa, false);
+  const rack = new BaseItem(["rack"], false);
+  chiikawa_camera.addItem(camera);
+  chiikawa_camera.addItem(rack);
 });
