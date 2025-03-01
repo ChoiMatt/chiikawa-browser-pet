@@ -242,7 +242,15 @@ class Chiikawa extends BaseItem {
 
   ChiikawaDisappear() {
     this.removeAllClasses();
+    this.walking = false;
     this.div.classList.add("fade");
+    this.div.addEventListener(
+      "animationend",
+      () => {
+        this.div.style.display = "none";
+      },
+      { once: true }
+    );
   }
 }
 

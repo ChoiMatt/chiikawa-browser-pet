@@ -24,6 +24,27 @@
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_walk_right.png");
 }
 
+@keyframes ssh-pet-fade {
+  0% {
+    opacity: 1;
+    background-position-y: 0;
+  }
+  100% {
+    opacity: 0;
+    background-position-y: -1138px;
+  }
+}
+
+.fade {
+  width: 50px;
+  height: 54px;
+  background-repeat: no-repeat;
+  background-size: 50px 1138px;
+  background-position: 0 0;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_fade.png");
+  animation: ssh-pet-fade 2s steps(21) forwards;
+}
+
 @keyframes ssh-pet-smile {
   0% {
     background-position-y: 0;
