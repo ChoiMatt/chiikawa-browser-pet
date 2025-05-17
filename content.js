@@ -27,13 +27,6 @@ class Camera extends BaseItem {
   }
 
   CameraAnimation() {
-    // const cameraSound = new Audio(
-    //   chrome.runtime.getURL("audio/camera_click.mp3")
-    // );
-    // //cameraSound.volume = this.setVolume;
-    // cameraSound.play().catch((error) => {
-    //   console.error("Error playing sound:", error);
-    // });
     const blink = document.createElement("div");
     blink.classList.add("blink");
     this.div.appendChild(blink);
@@ -60,6 +53,7 @@ class Camera extends BaseItem {
 class Chiikawa extends BaseItem {
   constructor() {
     super(["rest"]); // Call the parent constructor with the initial class
+    this.div.id = "chiikawa";
     this.div.style.position = "fixed";
     this.div.style.bottom = "0";
     this.div.style.zIndex = "1000";
@@ -247,7 +241,7 @@ class Chiikawa extends BaseItem {
     this.div.addEventListener(
       "animationend",
       () => {
-        this.div.style.display = "none";
+        this.div.classList.add("hide");
       },
       { once: true }
     );
@@ -263,4 +257,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const rack = new BaseItem(["rack"], false);
   chiikawa_camera.addItem(camera);
   chiikawa_camera.addItem(rack);
+
+  chrome.storage.local.get([id], (result) => {
+    let display_style = "block";
+    if (result[id] !== undefined) {
+      if (result[id]) {
+        if (id === "chiikawa") {
+          element = document.querySelector(`#${id}`);
+        } else {
+          if (id === "chiikawa_camera") display_style = "flex";
+          element = document.querySelector(`.${id}`);
+        }
+        element.style.display = "none";
+      }
+    }
+  });
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === "toggleElement") {
+      let element;
+      let display_style = "block";
+      if (request.id === "chiikawa") {
+        element = document.querySelector(`#${request.id}`);
+      } else {
+        if (request.id === "chiikawa_camera") display_style = "flex";
+        element = document.querySelector(`.${request.id}`);
+      }
+      if (request.checked) {
+        element.style.display = "none";
+      } else if (!request.checked) {
+        element.style.display = display_style;
+      }
+    } else if (request.action === "setVolume") {
+      set_volume = request.volume / 100;
+      crySound.volume = set_volume;
+      cameraSound.volume = set_volume;
+    }
+  });
 });
