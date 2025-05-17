@@ -61,8 +61,8 @@ class Chiikawa extends BaseItem {
     this.petWidth = 40; // Width of the pet in pixels
     this.petHeight = 60; // Height of the pet in pixels
     this.actions = {
-      rest: 2000, // Duration in milliseconds
-      dance: 3500, // Duration in milliseconds
+      rest: 3000, // Duration in milliseconds
+      dance: 4000, // Duration in milliseconds
       sing: 1000,
     };
     this.actionKeys = Object.keys(this.actions);
@@ -71,8 +71,8 @@ class Chiikawa extends BaseItem {
     this.x = Math.random() * (window.innerWidth - this.petWidth);
     this.direction = Math.random() < 0.5 ? -1 : 1;
     this.walking = false;
-    this.maxWalkDuration = 10000;
-    this.minWalkDuration = 5000;
+    this.maxWalkDuration = 20000;
+    this.minWalkDuration = 10000;
     this.isDragging = false;
     this.isFalling = false;
     this.dragOffsetX = 0;

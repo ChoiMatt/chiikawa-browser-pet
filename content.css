@@ -50,7 +50,7 @@
     background-position-y: 0;
   }
   100% {
-    background-position-y: -594px;
+    background-position-y: -810px;
   }
 }
 
@@ -58,9 +58,9 @@
   width: 50px;
   height: 54px;
   background-repeat: no-repeat;
-  background-size: 50px 594px;
+  background-size: 50px 810px;
   background-position: 0 0;
-  animation: ssh-pet-smile 2.5s steps(11) infinite;
+  animation: ssh-pet-smile 3s steps(15) infinite;
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_smile.png");
 }
 
@@ -69,17 +69,17 @@
     background-position-y: 0;
   }
   100% {
-    background-position-y: -825px;
+    background-position-y: -1045px;
   }
 }
 
 .dance {
   width: 51px;
   height: 55px;
-  background-size: 51px 825px;
+  background-size: 51px 1045px;
   background-position: 0 0;
-  background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_dance-1.png");
-  animation: ssh-pet-dance 3.5s steps(15) infinite;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_dance.png");
+  animation: ssh-pet-dance 4s steps(19) infinite;
 }
 
 .sing {
@@ -133,7 +133,7 @@
   background-size: 49px 459px;
   background-position: 0 0;
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_ground.png");
-  animation: ssh-pet-ground 2s steps(9) infinite;
+  animation: ssh-pet-ground 2s steps(9) forwards;
 }
 
 .background-item {
