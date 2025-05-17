@@ -258,19 +258,24 @@ document.addEventListener("DOMContentLoaded", () => {
   chiikawa_camera.addItem(camera);
   chiikawa_camera.addItem(rack);
 
-  chrome.storage.local.get([id], (result) => {
-    let display_style = "block";
-    if (result[id] !== undefined) {
-      if (result[id]) {
+  // Initialize visibility state for all elements
+  const elements = ["chiikawa_bag", "chiikawa_weapon", "chiikawa_camera", "chiikawa"];
+  chrome.storage.local.get(elements, (result) => {
+    elements.forEach(id => {
+      let display_style = "block";
+      if (result[id] !== undefined && result[id]) {
+        let element;
         if (id === "chiikawa") {
           element = document.querySelector(`#${id}`);
         } else {
           if (id === "chiikawa_camera") display_style = "flex";
           element = document.querySelector(`.${id}`);
         }
-        element.style.display = "none";
+        if (element) {
+          element.style.display = "none";
+        }
       }
-    }
+    });
   });
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
