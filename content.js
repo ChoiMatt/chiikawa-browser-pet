@@ -288,10 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (!request.checked) {
         element.style.display = display_style;
       }
-    } else if (request.action === "setVolume") {
-      set_volume = request.volume / 100;
-      crySound.volume = set_volume;
-      cameraSound.volume = set_volume;
     }
   });
 });
