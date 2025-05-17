@@ -77,6 +77,16 @@ button:hover {
   margin: 14px 0;
 }
 
+.mb-1 {
+  margin-block: 6px;
+}
+
+.hint {
+  font-size: 14px;
+  font-weight: 500;
+  width: fit-content;
+  margin: auto;
+}
 .volume-label {
   font-size: 14px;
   font-weight: 500;
