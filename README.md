@@ -25,6 +25,7 @@ Follow these steps to install the Chrome extension from this repository:
 
 ## How to Hide Specific Elements
 
+![Image of the panel](readme/panel.png)
 1. Click on the extension icon in the Chrome toolbar.
 2. A panel will open, displaying options to hide specific elements on the page.
 3. Select the element you want to hide by checking the appropriate switch.
