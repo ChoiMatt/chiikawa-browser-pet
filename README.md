@@ -36,3 +36,6 @@ Follow these steps to install the Chrome extension from this repository:
 2. Go to the Extensions page by clicking on the three dots in the upper right corner, then selecting **More tools** > **Extensions**.
 3. Find the extension you want to disable.
 4. Toggle the switch next to the extension to disable it.
+
+# Enjoy Your Time with Chiikawa
+![Image of the a demo of this extension](readme/demo.png)
