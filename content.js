@@ -6,18 +6,18 @@ class BaseItem {
   }
 
   addItem(item) {
-    this.div.appendChild(item.div); // Append the provided item's div to this div
+    this.div.appendChild(item.div);
   }
 
   removeAllClasses() {
-    this.div.className = ""; // Set className to an empty string
+    this.div.className = "";
   }
 }
 
 class Camera extends BaseItem {
   constructor(classList, chiikawaInstance, addToBody = true) {
     super(classList, addToBody);
-    this.chiikawa = chiikawaInstance; // Store the chiikawa instance
+    this.chiikawa = chiikawaInstance;
     this.cameraClicked = false;
     this.init();
   }
@@ -52,14 +52,14 @@ class Camera extends BaseItem {
 
 class Chiikawa extends BaseItem {
   constructor() {
-    super(["rest"]); // Call the parent constructor with the initial class
+    super(["rest"]);
     this.div.id = "chiikawa";
     this.div.style.position = "fixed";
     this.div.style.bottom = "0";
     this.div.style.zIndex = "1000";
     this.div.style.transition = "transform 0.5s";
-    this.petWidth = 40; // Width of the pet in pixels
-    this.petHeight = 60; // Height of the pet in pixels
+    this.petWidth = 40;
+    this.petHeight = 60;
     this.actions = {
       rest: 3000,
       dance: 4000,
@@ -91,14 +91,11 @@ class Chiikawa extends BaseItem {
     this.thoughtBubble.classList.add("thought-bubble");
     this.div.appendChild(this.thoughtBubble);
 
-    // Start the pet behavior loop
     requestAnimationFrame(this.updatePet.bind(this));
     setTimeout(this.startWalking.bind(this), this.actionDuration);
 
-    // Add resize event listener
     window.addEventListener("resize", this.handleResize.bind(this));
 
-    // Add drag functionality
     this.div.addEventListener("mousedown", this.handleMouseDown.bind(this));
     document.addEventListener("mousemove", this.handleMouseMove.bind(this));
     document.addEventListener("mouseup", this.handleMouseUp.bind(this));
@@ -110,13 +107,12 @@ class Chiikawa extends BaseItem {
 
   updatePet() {
     if (!this.isDragging && !this.isFalling && this.walking) {
-      const speed = Math.random() * 0.5; // Random speed between 0 and 0.5 pixels per frame
+      const speed = Math.random() * 0.5;
       this.x += speed * this.direction;
 
-      // Change direction if the pet hits the edge of the screen
       if (this.x < 0 || this.x > window.innerWidth - this.petWidth) {
-        this.direction *= -1; // Reverse direction
-        // Ensure the pet stays within the window
+        this.direction *= -1;
+
         this.x = Math.max(
           0,
           Math.min(this.x, window.innerWidth - this.petWidth)
@@ -145,9 +141,8 @@ class Chiikawa extends BaseItem {
     this.removeAllClasses();
     this.div.classList.add("walk");
 
-    // Rethink direction randomly before starting to walk
-    this.direction = Math.random() < 0.5 ? -1 : 1; // Randomly set direction
-    this.updateDirectionClass(); // Update the class based on the new direction
+    this.direction = Math.random() < 0.5 ? -1 : 1;
+    this.updateDirectionClass();
 
     const walkDuration =
       Math.random() * (this.maxWalkDuration - this.minWalkDuration) +
@@ -164,7 +159,6 @@ class Chiikawa extends BaseItem {
     this.div.classList.add(this.chosenActions);
     this.actionDuration = this.actions[this.chosenActions];
 
-    // Handle thought bubble animation
     if (this.thoughtBubble) {
       if (this.chosenActions === "think") {
         this.thoughtBubble.style.animation = "none";
@@ -214,15 +208,14 @@ class Chiikawa extends BaseItem {
       this.isDragging = false;
       this.isFalling = true;
 
-      // Calculate the distance to fall
       const petRect = this.div.getBoundingClientRect();
-      const fallDistance = window.innerHeight - petRect.bottom; // Distance to the bottom of the window
+      const fallDistance = window.innerHeight - petRect.bottom;
 
       // Set a duration based on the fall distance (e.g., 0.5 seconds for 100 pixels)
       const duration = Math.min(fallDistance / 200, 1.25); // Example: 1 second max duration
 
-      this.div.style.transition = `bottom ${duration}s cubic-bezier(0.5, 0, 1, 1)`; // Enable falling transition
-      this.div.style.bottom = "0px"; // Make the pet fall to the bottom
+      this.div.style.transition = `bottom ${duration}s cubic-bezier(0.5, 0, 1, 1)`;
+      this.div.style.bottom = "0px";
 
       setTimeout(() => {
         this.isFalling = false;
@@ -272,7 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
   chiikawa_camera.addItem(camera);
   chiikawa_camera.addItem(rack);
 
-  // Initialize visibility state for all elements
   const elements = ["chiikawa_bag", "chiikawa_weapon", "chiikawa_camera", "chiikawa"];
   chrome.storage.local.get(elements, (result) => {
     elements.forEach(id => {
