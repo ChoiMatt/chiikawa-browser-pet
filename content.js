@@ -61,9 +61,9 @@ class Chiikawa extends BaseItem {
     this.petWidth = 40; // Width of the pet in pixels
     this.petHeight = 60; // Height of the pet in pixels
     this.actions = {
-      rest: 3000, // Duration in milliseconds
-      dance: 4000, // Duration in milliseconds
-      sing: 1000,
+      rest: 3000,
+      dance: 4000,
+      think: 5000,
     };
     this.actionKeys = Object.keys(this.actions);
     this.chosenActions = this.actionKeys[0];
@@ -78,6 +78,7 @@ class Chiikawa extends BaseItem {
     this.dragOffsetX = 0;
     this.dragOffsetY = 0;
     this.setVolume = 0.5;
+    this.thoughtBubble = null;
 
     this.init();
   }
@@ -86,9 +87,13 @@ class Chiikawa extends BaseItem {
     this.div.style.left = `${this.x}px`;
     this.div.style.bottom = "0px";
 
+    this.thoughtBubble = document.createElement("div");
+    this.thoughtBubble.classList.add("thought-bubble");
+    this.div.appendChild(this.thoughtBubble);
+
     // Start the pet behavior loop
     requestAnimationFrame(this.updatePet.bind(this));
-    setTimeout(this.startWalking.bind(this), this.actionDuration); // Start the first walk after initial rest
+    setTimeout(this.startWalking.bind(this), this.actionDuration);
 
     // Add resize event listener
     window.addEventListener("resize", this.handleResize.bind(this));
@@ -158,7 +163,16 @@ class Chiikawa extends BaseItem {
     this.removeAllClasses();
     this.div.classList.add(this.chosenActions);
     this.actionDuration = this.actions[this.chosenActions];
-    setTimeout(this.startWalking.bind(this), this.actionDuration); // Start walking after resting
+
+    // Handle thought bubble animation
+    if (this.thoughtBubble) {
+      if (this.chosenActions === "think") {
+        this.thoughtBubble.style.animation = "none";
+        void this.thoughtBubble.offsetWidth;
+        this.thoughtBubble.style.animation = "ssh-pet-thought-bubble 5s steps(21) forwards";
+      } 
+    }
+    setTimeout(this.startWalking.bind(this), this.actionDuration);
   }
 
   handleResize() {
@@ -174,7 +188,7 @@ class Chiikawa extends BaseItem {
     const rect = this.div.getBoundingClientRect();
     this.dragOffsetX = e.clientX - rect.left;
     this.dragOffsetY = e.clientY - rect.top;
-    this.div.style.transition = "none"; // Disable transition during drag
+    this.div.style.transition = "none";
   }
 
   handleMouseMove(e) {

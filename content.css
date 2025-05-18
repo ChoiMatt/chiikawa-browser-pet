@@ -82,15 +82,6 @@
   animation: ssh-pet-dance 4s steps(19) infinite;
 }
 
-.sing {
-  width: 50px;
-  height: 54px;
-  background-size: 40px 60px;
-  background-position: 0 0;
-  animation: none;
-  background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_rest.png");
-}
-
 @keyframes ssh-pet-cry {
   0% {
     background-position-y: 0;
@@ -134,6 +125,56 @@
   background-position: 0 0;
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_ground.png");
   animation: ssh-pet-ground 2s steps(9) forwards;
+}
+
+@keyframes ssh-pet-think {
+  0% {
+    background-position-y: 0;
+  }
+  100% {
+    background-position-y: -1134px;
+  }
+}
+
+.think {
+  width: 50px;
+  height: 54px;
+  background-repeat: no-repeat;
+  background-size: 50px 1134px;
+  background-position: 0 0;
+  animation: ssh-pet-think 5s steps(21) infinite;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_think.png");
+}
+
+@keyframes ssh-pet-thought-bubble {
+  0% {
+    opacity: 0;
+    background-position-y: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    background-position-y: -861px; 
+    opacity: 0;
+  }
+}
+
+.thought-bubble {
+  --width : 73px;
+  --height : 41px;
+  width: var(--width);
+  height: var(--height);
+  position: absolute;
+  right: calc(var(--width) *-1 + 25px);
+  top: calc(var(--height) *-1 + 10px);
+  opacity: 0;
+  background-size: 73px 861px;
+  background-position: 0 0;
+  background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_beetle.png");
 }
 
 .background-item {
