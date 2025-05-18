@@ -52,7 +52,7 @@ class Camera extends BaseItem {
 
 class Chiikawa extends BaseItem {
   constructor() {
-    super(["rest"]);
+    super([]);
     this.div.id = "chiikawa";
     this.div.style.position = "fixed";
     this.div.style.bottom = "0";
@@ -91,6 +91,7 @@ class Chiikawa extends BaseItem {
     this.thoughtBubble.classList.add("thought-bubble");
     this.div.appendChild(this.thoughtBubble);
 
+    this.div.classList.add(this.chosenActions);
     requestAnimationFrame(this.updatePet.bind(this));
     setTimeout(this.startWalking.bind(this), this.actionDuration);
 
