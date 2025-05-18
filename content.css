@@ -87,26 +87,25 @@
     background-position-y: 0;
   }
   100% {
-    background-position-y: -180px; /* Total height of the scaled sprite sheet */
+    background-position-y: -180px;
   }
 }
 
 .cry {
   width: 50px;
   height: 60px;
-  background-size: 50px 180px; /* Width and total height of the scaled sprite sheet */
+  background-size: 50px 180px;
   background-position: 0 0;
   background-repeat: no-repeat;
   cursor: grabbing;
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_afraid.png");
-  animation: ssh-pet-cry 0.5s steps(3) infinite; /* 3 steps for 3 frames */
+  animation: ssh-pet-cry 0.5s steps(3) infinite;
 }
 
 .fall {
   width: 50px;
   height: 54px;
   background-image: url("chrome-extension://__MSG_@@extension_id__/images/chiikawa_rest.png");
-  /* Change color to indicate falling */
 }
 
 @keyframes ssh-pet-ground {
@@ -114,7 +113,7 @@
     background-position-y: 0;
   }
   100% {
-    background-position-y: -459px; /* Total height of the scaled sprite sheet */
+    background-position-y: -459px;
   }
 }
 
@@ -179,7 +178,7 @@
 
 .background-item {
   position: fixed;
-  z-index: 999; /* Ensure it's below the pet */
+  z-index: 999;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
